@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Script waits for 60 seconds
+sleep 60
+
+#/bin/systemctl restart sendmail.service
+/sbin/service sendmail restart
+
+IP=`hostname -i`
+HOSTNAME=`hostname -f`
+echo "$HOSTNAME online.  IP address: $IP" > /root/email.txt
+echo >> /root/email.txt
+date >> /root/email.txt
+
+mail -s "$HOSTNAME online" -r restart@server.domain.tld myemail@mydomain.tld < /root/email.txt
+mail -s "$HOSTNAME online" -r restart@server.domain.tld myotheremail@myotherdomain.tld < /root/email.txt
+mail -s "$HOSTNAME online" -r restart@server.domain.tld mycellphone@txt.carrier.tld < /root/email.txt
+
+#cat /root/email.txt
+rm -rf /root/email.txt
+
+#/bin/systemctl restart sendmail.service
+/sbin/service sendmail restart
